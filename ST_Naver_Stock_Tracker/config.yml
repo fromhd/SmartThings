@@ -1,0 +1,6 @@
+name: Naver Stock Tracker
+packageKey: naver-stock-tracker
+description: 실시간 네이버 주식 시세 연동 및 목표가 달성률(%)을 제공하는 스마트싱스 엣지 드라이버입니다.
+permissions:
+  lan: {}
+  discovery: {}

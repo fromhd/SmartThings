@@ -1,0 +1,106 @@
+name: main
+components:
+  - id: main
+    label: EdgeBridge
+    capabilities:
+      - id: reasonmusic47804.stockPrice
+        version: 1
+      - id: reasonmusic47804.stockMarket
+        version: 1
+      - id: reasonmusic47804.stockYield
+        version: 1
+      - id: reasonmusic47804.stockRawPrice
+        version: 1
+      - id: healthCheck
+        version: 1
+    categories:
+      - name: Networking
+preferences:
+  - title: 종목 코드
+    name: stockCode
+    description: "네이버 금융 종목 코드 (예: 064350)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "064350"
+  - title: 평단가
+    name: avgPrice
+    description: "매수 평균 단가 (원). 수익률 계산에 사용됩니다."
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 0
+      maximum: 100000000
+      default: 100000
+  - title: Bridge IP
+    name: bridgeIp
+    description: "Bridge LAN IP (leave empty for mDNS auto-discovery)"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: ""
+  - title: Bridge Port
+    name: bridgePort
+    description: "Bridge port (default 8088)"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: ""
+  - title: Add New Device
+    name: addNewDevice
+    description: "Toggle ON to spawn another setup-profile device on this hub"
+    required: false
+    preferenceType: boolean
+    definition:
+      default: false
+  - title: 조회 주기 (초)
+    name: pollInterval
+    description: "주식 조회 간격 (초, 기본 10초)"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 10
+      maximum: 3600
+      default: 10
+  - title: Enable Debug Log
+    name: enableDebugLog
+    description: "Enable verbose debug logs"
+    required: true
+    preferenceType: boolean
+    definition:
+      default: false
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: reasonmusic47804.stockPrice
+        version: 1
+    actions: []
+  detailView:
+    - component: main
+      capability: reasonmusic47804.stockPrice
+      version: 1
+    - component: main
+      capability: reasonmusic47804.stockMarket
+      version: 1
+    - component: main
+      capability: reasonmusic47804.stockYield
+      version: 1
+  automation:
+    conditions:
+      - component: main
+        capability: reasonmusic47804.stockPrice
+        version: 1
+      - component: main
+        capability: reasonmusic47804.stockMarket
+        version: 1
+      - component: main
+        capability: reasonmusic47804.stockYield
+        version: 1
+      - component: main
+        capability: reasonmusic47804.stockRawPrice
+        version: 1
+    actions: []

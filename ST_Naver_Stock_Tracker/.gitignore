@@ -1,0 +1,26 @@
+# Build artifacts
+*.zip
+*.rar
+*.7z
+
+# SmartThings local
+.smartthings/
+
+# Backup files
+*.bak
+backup/
+
+# OS / Misc
+.DS_Store
+Thumbs.db
+NVIDIA Corporation/
+@eaDir/
+
+# IDE
+.vscode/
+.idea/
+.claude/
+
+# Temp files
+_tmp_*
+*.tmp

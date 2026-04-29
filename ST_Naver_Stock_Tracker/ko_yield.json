@@ -1,0 +1,9 @@
+﻿{
+    "label":  "수익률",
+    "attributes":  {
+                       "yield":  {
+                                     "label":  "수익률"
+                                 }
+                   },
+    "tag":  "ko"
+}

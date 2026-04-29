@@ -1,0 +1,9 @@
+﻿{
+    "label":  "현재가 (숫자 자동화용)",
+    "attributes":  {
+                       "rawPrice":  {
+                                        "label":  "현재가"
+                                    }
+                   },
+    "tag":  "ko"
+}

@@ -1,0 +1,28 @@
+﻿{
+    "automation":  {
+                       "actions":  [
+
+                                   ],
+                       "conditions":  [
+                                          {
+                                              "label":  "현재가 (숫자)",
+                                              "displayType":  "numberField",
+                                              "numberField":  {
+                                                                  "value":  "rawPrice.value",
+                                                                  "valueType":  "number"
+                                                              }
+                                          }
+                                      ]
+                   },
+    "dashboard":  {
+                      "actions":  [
+
+                                  ],
+                      "states":  [
+
+                                 ]
+                  },
+    "detailView":  [
+
+                   ]
+}

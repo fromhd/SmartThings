@@ -1,0 +1,32 @@
+{
+    "dashboard": {
+        "states": [
+            {
+                "label": "{{priceInfo.value}}"
+            }
+        ],
+        "actions": []
+    },
+    "detailView": [
+        {
+            "label": "주식 정보",
+            "displayType": "state",
+            "state": {
+                "label": "{{priceInfo.value}}"
+            }
+        }
+    ],
+    "automation": {
+        "conditions": [
+            {
+                "label": "목표가 달성률",
+                "displayType": "numberField",
+                "numberField": {
+                    "value": "targetPercentage.value",
+                    "unit": "targetPercentage.unit"
+                }
+            }
+        ],
+        "actions": []
+    }
+}
