@@ -1,4 +1,4 @@
--- init.lua  (Rain/Snow Tracker)
+-- init.lua  (Weather Tracker)
 --
 -- 기상청 초단기실황(getUltraSrtNcst) API를 EdgeBridge를 통해 조회하여
 -- 현재 날씨 상태(SKY+PTY)를 표시하고, 강수 여부를 waterSensor로 반영합니다.
@@ -120,31 +120,31 @@ local function fetch_weather_and_emit(device)
   local debug    = device.preferences.enableDebugLog == true
 
   if ip == "" then
-    log.warn("[rain/snow] bridgeIp not set, skipping")
+    log.warn("[weather-tracker] bridgeIp not set, skipping")
     return
   end
   if api_key == "" then
-    log.warn("[rain/snow] apiKey not set, skipping")
+    log.warn("[weather-tracker] apiKey not set, skipping")
     return
   end
 
-  log.info(string.format("[rain/snow] connecting to bridge: %s:%d", ip, port))
+  log.info(string.format("[weather-tracker] connecting to bridge: %s:%d", ip, port))
   local url = build_weather_url(api_key, nx, ny)
-  if debug then log.info("[rain/snow] request url: " .. url) end
+  if debug then log.info("[weather-tracker] request url: " .. url) end
 
   cosock.spawn(function()
     local parsed, err = bridge_api.forward(ip, port, url, nil)
 
     -- ── 오류 처리 ──────────────────────────────────────────────────────
     if not parsed then
-      log.warn("[rain/snow] fetch failed: " .. tostring(err))
+      log.warn("[weather-tracker] fetch failed: " .. tostring(err))
       pcall(device.emit_event, device, capabilities.healthCheck.healthStatus("offline"))
       return
     end
 
     -- ── 기상청 특유의 에러 메시지 체크 ──────────────────────────────────
     if parsed.response and parsed.response.header and parsed.response.header.resultCode ~= "00" then
-      log.warn(string.format("[rain/snow] API Error: %s (%s)",
+      log.warn(string.format("[weather-tracker] API Error: %s (%s)",
         tostring(parsed.response.header.resultCode),
         tostring(parsed.response.header.resultMsg)))
       pcall(device.emit_event, device, capabilities.healthCheck.healthStatus("offline"))
@@ -157,8 +157,8 @@ local function fetch_weather_and_emit(device)
     end)
     
     if not ok or type(items) ~= "table" then
-      log.warn("[rain/snow] unexpected API response structure or no data")
-      if debug and parsed then log.info("[rain/snow] response body: " .. tostring(parsed)) end
+      log.warn("[weather-tracker] unexpected API response structure or no data")
+      if debug and parsed then log.info("[weather-tracker] response body: " .. tostring(parsed)) end
       pcall(device.emit_event, device, capabilities.healthCheck.healthStatus("offline"))
       return
     end
@@ -186,7 +186,7 @@ local function fetch_weather_and_emit(device)
     local raining = is_precipitation(pty, rn1)
     local label   = get_weather_label(sky, pty, rn1)
 
-    log.info(string.format("[rain/snow] SKY=%d PTY=%d RN1=%.1f T1H=%s REH=%s → %s (raining=%s)",
+    log.info(string.format("[weather-tracker] SKY=%d PTY=%d RN1=%.1f T1H=%s REH=%s → %s (raining=%s)",
       sky, pty, rn1, tostring(t1h), tostring(reh), label, tostring(raining)))
 
     -- ── 이벤트 발행 ────────────────────────────────────────────────────
@@ -217,7 +217,7 @@ local function fetch_weather_and_emit(device)
     end
 
     pcall(device.emit_event, device, capabilities.healthCheck.healthStatus("online"))
-  end, "rain-snow-fetch")
+  end, "weather-fetch")
 end
 
 -- ──────────────────────────────────────────────────────────────────────────
@@ -243,19 +243,19 @@ end
 -- Lifecycle
 -- ──────────────────────────────────────────────────────────────────────────
 local function device_init(driver, device)
-  log.info("[rain/snow] device_init: " .. device.device_network_id)
+  log.info("[weather-tracker] device_init: " .. device.device_network_id)
   fetch_weather_and_emit(device)
   restart_timer(device)
 end
 
 local function device_removed(driver, device)
-  log.info("[rain/snow] device_removed: " .. device.device_network_id)
+  log.info("[weather-tracker] device_removed: " .. device.device_network_id)
   local timer = device:get_field("weather_timer")
   if timer then pcall(function() device.thread:cancel_timer(timer) end) end
 end
 
 local function info_changed(driver, device, event, args)
-  log.info("[rain/snow] preferences changed, re-fetching")
+  log.info("[weather-tracker] preferences changed, re-fetching")
   fetch_weather_and_emit(device)
   restart_timer(device)
 end
@@ -270,7 +270,7 @@ end
 -- ──────────────────────────────────────────────────────────────────────────
 -- Driver
 -- ──────────────────────────────────────────────────────────────────────────
-local driver = Driver("Rain/Snow Tracker", {
+local driver = Driver("Weather Tracker", {
   discovery = discovery.handle_discovery,
 
   lifecycle_handlers = {
@@ -286,5 +286,5 @@ local driver = Driver("Rain/Snow Tracker", {
   },
 })
 
-log.info("[rain/snow] Rain/Snow Tracker driver starting")
+log.info("[weather-tracker] Weather Tracker driver starting")
 driver:run()
