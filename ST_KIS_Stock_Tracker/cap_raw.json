@@ -1,0 +1,25 @@
+﻿{
+    "commands":  {
+
+                 },
+    "attributes":  {
+                       "rawPrice":  {
+                                        "enumCommands":  [
+
+                                                         ],
+                                        "schema":  {
+                                                       "additionalProperties":  false,
+                                                       "properties":  {
+                                                                          "value":  {
+                                                                                        "type":  "number"
+                                                                                    }
+                                                                      },
+                                                       "type":  "object",
+                                                       "required":  [
+                                                                        "value"
+                                                                    ]
+                                                   }
+                                    }
+                   },
+    "name":  "Stock Raw Price"
+}

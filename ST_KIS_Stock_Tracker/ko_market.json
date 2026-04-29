@@ -1,0 +1,9 @@
+﻿{
+    "label":  "주식장",
+    "attributes":  {
+                       "market":  {
+                                      "label":  "주식장"
+                                  }
+                   },
+    "tag":  "ko"
+}

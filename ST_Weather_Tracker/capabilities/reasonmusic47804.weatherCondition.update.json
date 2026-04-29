@@ -1,0 +1,21 @@
+{
+  "name": "기상상황",
+  "attributes": {
+    "condition": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "maxLength": 64
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "value"
+        ]
+      }
+    }
+  },
+  "commands": {}
+}

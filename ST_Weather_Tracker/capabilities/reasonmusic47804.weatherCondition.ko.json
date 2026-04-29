@@ -1,0 +1,10 @@
+{
+  "tag": "ko",
+  "label": "기상상황",
+  "attributes": {
+    "condition": {
+      "label": "기상상황"
+    }
+  },
+  "commands": {}
+}

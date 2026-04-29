@@ -1,0 +1,47 @@
+name: setup
+components:
+  - id: main
+    label: EdgeBridge Setup
+    capabilities:
+      - id: samplecircle50208.setupCard
+        version: 1
+      - id: refresh
+        version: 1
+      - id: healthCheck
+        version: 1
+    categories:
+      - name: Networking
+preferences:
+  - title: Bridge IP
+    name: bridgeIp
+    description: "Bridge LAN IP (leave empty for mDNS auto-discovery)"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: ""
+  - title: Bridge Port
+    name: bridgePort
+    description: "Bridge port (default 8088)"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: ""
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: samplecircle50208.setupCard
+        version: 1
+    actions: []
+  detailView:
+    - component: main
+      capability: samplecircle50208.setupCard
+      version: 1
+    - component: main
+      capability: refresh
+      version: 1
+  automation:
+    conditions: []
+    actions: []

@@ -1,0 +1,24 @@
+{
+  "id": "reasonmusic47804.weatherCondition",
+  "version": 1,
+  "status": "proposed",
+  "name": "Weather Condition",
+  "ephemeral": false,
+  "attributes": {
+    "condition": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "maxLength": 64
+          }
+        },
+        "additionalProperties": false,
+        "required": ["value"]
+      },
+      "enumCommands": []
+    }
+  },
+  "commands": {}
+}

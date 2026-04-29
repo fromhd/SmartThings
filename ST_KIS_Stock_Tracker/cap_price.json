@@ -1,0 +1,42 @@
+﻿{
+    "commands":  {
+
+                 },
+    "attributes":  {
+                       "price":  {
+                                     "enumCommands":  [
+
+                                                      ],
+                                     "schema":  {
+                                                    "additionalProperties":  false,
+                                                    "properties":  {
+                                                                       "value":  {
+                                                                                     "type":  "string"
+                                                                                 }
+                                                                   },
+                                                    "type":  "object",
+                                                    "required":  [
+                                                                     "value"
+                                                                 ]
+                                                }
+                                 },
+                       "rawPrice":  {
+                                        "enumCommands":  [
+
+                                                         ],
+                                        "schema":  {
+                                                       "additionalProperties":  false,
+                                                       "properties":  {
+                                                                          "value":  {
+                                                                                        "type":  "number"
+                                                                                    }
+                                                                      },
+                                                       "type":  "object",
+                                                       "required":  [
+                                                                        "value"
+                                                                    ]
+                                                   }
+                                    }
+                   },
+    "name":  "Stock Price"
+}

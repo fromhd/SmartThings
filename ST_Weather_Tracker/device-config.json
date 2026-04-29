@@ -1,0 +1,56 @@
+{
+  "type": "dth",
+  "dashboard": {
+    "states": [
+      {
+        "component": "main",
+        "capability": "reasonmusic47804.weatherCondition",
+        "version": 1,
+        "attribute": "condition"
+      }
+    ],
+    "actions": []
+  },
+  "detailView": [
+    {
+      "component": "main",
+      "capability": "reasonmusic47804.weatherCondition",
+      "version": 1
+    },
+    {
+      "component": "main",
+      "capability": "temperatureMeasurement",
+      "version": 1
+    },
+    {
+      "component": "main",
+      "capability": "reasonmusic47804.outdoorHumidity",
+      "version": 1
+    },
+    {
+      "component": "main",
+      "capability": "healthCheck",
+      "version": 1
+    }
+  ],
+  "automation": {
+    "conditions": [
+      {
+        "component": "main",
+        "capability": "waterSensor",
+        "version": 1
+      },
+      {
+        "component": "main",
+        "capability": "temperatureMeasurement",
+        "version": 1
+      },
+      {
+        "component": "main",
+        "capability": "reasonmusic47804.outdoorHumidity",
+        "version": 1
+      }
+    ],
+    "actions": []
+  }
+}

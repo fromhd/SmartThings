@@ -1,0 +1,113 @@
+name: main
+vid: c04e6ce4-c81d-39d3-bdda-53532dfc8af7
+mnmn: SmartThingsCommunity
+components:
+  - id: main
+    label: Weather Tracker
+    capabilities:
+      - id: waterSensor
+        version: 1
+      - id: reasonmusic47804.weatherCondition
+        version: 1
+      - id: temperatureMeasurement
+        version: 1
+      - id: reasonmusic47804.outdoorHumidity
+        version: 1
+      - id: healthCheck
+        version: 1
+      - id: refresh
+        version: 1
+    categories:
+      - name: Networking
+preferences:
+  - title: "Bridge IP"
+    name: bridgeIp
+    description: "EdgeBridge LAN IP (필수)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "192.168.1.1"
+  - title: "Bridge Port"
+    name: bridgePort
+    description: "EdgeBridge 포트 (기본 8088)"
+    required: false
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "8088"
+  - title: "NX (격자 X)"
+    name: gridNx
+    description: "기상청 격자 X 좌표 (기본 84 = 구미 상모)"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 150
+      default: 84
+  - title: "NY (격자 Y)"
+    name: gridNy
+    description: "기상청 격자 Y 좌표 (기본 95 = 구미 상모)"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 130
+      default: 95
+  - title: "기상청 API Key"
+    name: apiKey
+    description: "공공데이터포털 기상청 초단기실황 API 인증키"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: ""
+  - title: "폴링 간격 (분)"
+    name: pollInterval
+    description: "날씨 조회 주기 (분, 기본 5분)"
+    required: false
+    preferenceType: number
+    definition:
+      minimum: 1
+      maximum: 30
+      default: 10
+  - title: "Enable Debug Log"
+    name: enableDebugLog
+    description: "디버그 로그 활성화"
+    required: false
+    preferenceType: boolean
+    definition:
+      default: false
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: reasonmusic47804.weatherCondition
+        version: 1
+        attribute: condition
+    actions: []
+  detailView:
+    - component: main
+      capability: reasonmusic47804.weatherCondition
+      version: 1
+    - component: main
+      capability: temperatureMeasurement
+      version: 1
+    - component: main
+      capability: reasonmusic47804.outdoorHumidity
+      version: 1
+    - component: main
+      capability: healthCheck
+      version: 1
+  automation:
+    conditions:
+      - component: main
+        capability: waterSensor
+        version: 1
+      - component: main
+        capability: temperatureMeasurement
+        version: 1
+      - component: main
+        capability: reasonmusic47804.outdoorHumidity
+        version: 1
+    actions: []

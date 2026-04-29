@@ -1,0 +1,45 @@
+{
+  "id": "samplecircle50208.setupCard",
+  "version": 1,
+  "status": "proposed",
+  "name": "Setup Card",
+  "attributes": {
+    "info": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "object",
+            "properties": {
+              "html": { "type": "string" }
+            },
+            "required": ["html"],
+            "additionalProperties": false
+          }
+        },
+        "required": ["value"],
+        "additionalProperties": false
+      },
+      "setter": "setInfo"
+    }
+  },
+  "commands": {
+    "setInfo": {
+      "name": "setInfo",
+      "arguments": [
+        {
+          "name": "value",
+          "optional": false,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "html": { "type": "string" }
+            },
+            "required": ["html"],
+            "additionalProperties": false
+          }
+        }
+      ]
+    }
+  }
+}

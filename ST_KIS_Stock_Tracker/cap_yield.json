@@ -1,0 +1,32 @@
+{
+    "commands":  {
+
+                 },
+    "attributes":  {
+                       "yield":  {
+                                     "enumCommands":  [
+
+                                                      ],
+                                     "schema":  {
+                                                    "additionalProperties":  false,
+                                                    "properties":  {
+                                                                       "unit":  {
+                                                                                    "enum":  [
+                                                                                                 "%"
+                                                                                             ],
+                                                                                    "default":  "%",
+                                                                                    "type":  "string"
+                                                                                },
+                                                                       "value":  {
+                                                                                     "type":  "number"
+                                                                                 }
+                                                                   },
+                                                    "type":  "object",
+                                                    "required":  [
+                                                                     "value"
+                                                                 ]
+                                                }
+                                 }
+                   },
+    "name":  "Stock Yield"
+}

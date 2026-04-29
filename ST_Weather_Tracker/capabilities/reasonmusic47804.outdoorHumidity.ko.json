@@ -1,0 +1,10 @@
+{
+  "tag": "ko",
+  "label": "습도",
+  "attributes": {
+    "humidity": {
+      "label": "습도"
+    }
+  },
+  "commands": {}
+}

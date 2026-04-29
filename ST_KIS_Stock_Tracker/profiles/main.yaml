@@ -1,0 +1,107 @@
+name: main
+components:
+  - id: main
+    label: KIS Stock Tracker
+    capabilities:
+      - id: reasonmusic47804.stockPrice
+        version: 1
+      - id: reasonmusic47804.stockMarket
+        version: 1
+      - id: reasonmusic47804.stockYield
+        version: 1
+      - id: reasonmusic47804.stockRawPrice
+        version: 1
+      - id: healthCheck
+        version: 1
+    categories:
+      - name: Networking
+preferences:
+  - title: 종목 코드
+    name: stockCode
+    description: "한국투자증권 종목 코드 (예: 064350)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "064350"
+  - title: 종목 이름
+    name: stockName
+    description: "화면에 표시될 이름 (예: 현대로템)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "현대로템"
+  - title: 평단가
+    name: avgPrice
+    description: "매수 평균 단가 (원). 수익률 계산에 사용됩니다."
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 0
+      maximum: 100000000
+      default: 100000
+  - title: 파이썬 서버 도메인/IP
+    name: serverDomain
+    description: "IP 또는 도메인 (예: 123.123.123.123)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: ""
+  - title: 파이썬 서버 포트
+    name: serverPort
+    description: "포트 번호 (기본: 9595)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "9595"
+  - title: Bridge IP (필수)
+    name: bridgeIp
+    description: "EdgeBridge 서버 내부망 IP (예: 192.168.1.xxx)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "192.168.1.1"
+  - title: Bridge Port (필수)
+    name: bridgePort
+    description: "EdgeBridge 포트 (기본: 8088)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "8088"
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: reasonmusic47804.stockPrice
+        version: 1
+    actions: []
+  detailView:
+    - component: main
+      capability: reasonmusic47804.stockPrice
+      version: 1
+    - component: main
+      capability: reasonmusic47804.stockMarket
+      version: 1
+    - component: main
+      capability: reasonmusic47804.stockYield
+      version: 1
+  automation:
+    conditions:
+      - component: main
+        capability: reasonmusic47804.stockPrice
+        version: 1
+      - component: main
+        capability: reasonmusic47804.stockMarket
+        version: 1
+      - component: main
+        capability: reasonmusic47804.stockYield
+        version: 1
+      - component: main
+        capability: reasonmusic47804.stockRawPrice
+        version: 1
+    actions: []

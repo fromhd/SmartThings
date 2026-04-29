@@ -1,0 +1,36 @@
+﻿{
+    "automation":  {
+                       "actions":  [
+
+                                   ],
+                       "conditions":  [
+                                          {
+                                              "label":  "현재가 (숫자)",
+                                              "displayType":  "numberField",
+                                              "numberField":  {
+                                                                  "value":  "rawPrice.value",
+                                                                  "valueType":  "number"
+                                                              }
+                                          }
+                                      ]
+                   },
+    "dashboard":  {
+                      "actions":  [
+
+                                  ],
+                      "states":  [
+                                     {
+                                         "label":  "{{price.value}}"
+                                     }
+                                 ]
+                  },
+    "detailView":  [
+                       {
+                           "label":  "주식 정보",
+                           "displayType":  "state",
+                           "state":  {
+                                         "label":  "{{price.value}}"
+                                     }
+                       }
+                   ]
+}

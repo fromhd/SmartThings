@@ -1,0 +1,11 @@
+capabilities:
+  waterSensor:
+    label: "기상청 강수량"
+    attributes:
+      water:
+        i18n:
+          value:
+            dry: "강수 없음"
+            wet: "강수 감지"
+  reasonmusic47804.weatherCondition:
+    label: "현재 기상상태"

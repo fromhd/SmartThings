@@ -1,0 +1,6 @@
+name: ST Wifi Presence Sensor
+packageKey: wifi-presence-v2
+description: WiFi presence sensor for 4 family members via OpenWRT
+permissions:
+  lan: {}
+  discovery: {}

@@ -1,0 +1,23 @@
+{
+  "dashboard": {
+    "states": [
+      {
+        "label": "{{condition.value}}"
+      }
+    ],
+    "actions": []
+  },
+  "detailView": [
+    {
+      "label": "기상청 강수 정보",
+      "displayType": "state",
+      "state": {
+        "label": "{{condition.value}}"
+      }
+    }
+  ],
+  "automation": {
+    "conditions": [],
+    "actions": []
+  }
+}

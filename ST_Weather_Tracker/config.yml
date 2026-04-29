@@ -1,0 +1,6 @@
+name: Weather Tracker
+packageKey: RS-tracker
+description: 기상청 초단기실황 API를 통해 현재 강수 여부(비/눈/소나기)를 실시간으로 감지하는 스마트싱스 엣지 드라이버입니다.
+permissions:
+  lan: {}
+  discovery: {}

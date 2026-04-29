@@ -1,0 +1,35 @@
+﻿{
+    "automation":  {
+                       "actions":  [
+
+                                   ],
+                       "conditions":  [
+                                          {
+                                              "label":  "주식장",
+                                              "textField":  {
+                                                                "value":  "market.value"
+                                                            },
+                                              "displayType":  "textField"
+                                          }
+                                      ]
+                   },
+    "dashboard":  {
+                      "actions":  [
+
+                                  ],
+                      "states":  [
+                                     {
+                                         "label":  "{{market.value}}"
+                                     }
+                                 ]
+                  },
+    "detailView":  [
+                       {
+                           "label":  "주식장",
+                           "displayType":  "state",
+                           "state":  {
+                                         "label":  "{{market.value}}"
+                                     }
+                       }
+                   ]
+}

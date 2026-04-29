@@ -1,0 +1,23 @@
+{
+  "dashboard": {
+    "states": [
+      {
+        "label": "{{condition.value}}"
+      }
+    ],
+    "actions": []
+  },
+  "detailView": [
+    {
+      "label": "기상상황",
+      "displayType": "state",
+      "state": {
+        "label": "{{condition.value}}"
+      }
+    }
+  ],
+  "automation": {
+    "conditions": [],
+    "actions": []
+  }
+}

@@ -1,0 +1,25 @@
+{
+    "commands":  {
+
+                 },
+    "attributes":  {
+                       "market":  {
+                                      "enumCommands":  [
+
+                                                       ],
+                                      "schema":  {
+                                                     "additionalProperties":  false,
+                                                     "properties":  {
+                                                                        "value":  {
+                                                                                      "type":  "string"
+                                                                                  }
+                                                                    },
+                                                     "type":  "object",
+                                                     "required":  [
+                                                                      "value"
+                                                                  ]
+                                                 }
+                                  }
+                   },
+    "name":  "Stock Market"
+}

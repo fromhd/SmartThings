@@ -1,0 +1,38 @@
+{
+  "dashboard": {
+    "states": [],
+    "actions": []
+  },
+  "detailView": [
+    {
+      "label": "습도",
+      "displayType": "state",
+      "state": {
+        "label": "{{humidity.value}} %"
+      }
+    }
+  ],
+  "automation": {
+    "conditions": [
+      {
+        "label": "습도",
+        "displayType": "numberField",
+        "numberField": {
+          "attribute": "humidity",
+          "value": "humidity.value",
+          "unit": "humidity.unit",
+          "range": [0, 100],
+          "supportedOperators": [
+            "GREATER_THAN",
+            "GREATER_THAN_OR_EQUALS",
+            "LESS_THAN",
+            "LESS_THAN_OR_EQUALS",
+            "EQUALS",
+            "BETWEEN"
+          ]
+        }
+      }
+    ],
+    "actions": []
+  }
+}

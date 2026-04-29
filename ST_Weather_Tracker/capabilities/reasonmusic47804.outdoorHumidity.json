@@ -1,0 +1,29 @@
+{
+  "id": "reasonmusic47804.outdoorHumidity",
+  "version": 1,
+  "name": "Outdoor Humidity",
+  "ephemeral": false,
+  "attributes": {
+    "humidity": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "unit": {
+            "type": "string",
+            "enum": ["%"],
+            "default": "%"
+          }
+        },
+        "additionalProperties": false,
+        "required": ["value"]
+      },
+      "unit": "%"
+    }
+  },
+  "commands": {}
+}

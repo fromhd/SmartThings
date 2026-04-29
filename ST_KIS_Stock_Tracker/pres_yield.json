@@ -1,0 +1,37 @@
+﻿{
+    "automation":  {
+                       "actions":  [
+
+                                   ],
+                       "conditions":  [
+                                          {
+                                              "label":  "수익률 (평단가 대비)",
+                                              "displayType":  "numberField",
+                                              "numberField":  {
+                                                                  "valueType":  "number",
+                                                                  "unit":  "yield.unit",
+                                                                  "value":  "yield.value"
+                                                              }
+                                          }
+                                      ]
+                   },
+    "dashboard":  {
+                      "actions":  [
+
+                                  ],
+                      "states":  [
+                                     {
+                                         "label":  "{{yield.value}} {{yield.unit}}"
+                                     }
+                                 ]
+                  },
+    "detailView":  [
+                       {
+                           "label":  "수익률 (평단가 대비)",
+                           "displayType":  "state",
+                           "state":  {
+                                         "label":  "{{yield.value}} {{yield.unit}}"
+                                     }
+                       }
+                   ]
+}

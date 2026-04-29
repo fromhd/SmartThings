@@ -1,0 +1,9 @@
+﻿{
+    "label":  "주식 정보",
+    "attributes":  {
+                       "price":  {
+                                     "label":  "주식 정보"
+                                 }
+                   },
+    "tag":  "ko"
+}
