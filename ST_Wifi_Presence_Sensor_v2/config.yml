@@ -1,0 +1,6 @@
+name: ST Wifi Presence Sensor v2
+packageKey: wifi-presence-hook
+description: "WiFi 재실 센서 v2 — hotplug 이벤트 + uhttpd (파이썬 없음)"
+permissions:
+  lan: {}
+  discovery: {}

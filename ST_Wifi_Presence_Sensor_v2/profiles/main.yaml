@@ -1,0 +1,95 @@
+name: main
+components:
+  - id: main
+    label: "집 재실"
+    capabilities:
+      - id: presenceSensor
+        version: 1
+      - id: refresh
+        version: 1
+    categories:
+      - name: PresenceSensor
+  - id: diego
+    label: Diego
+    capabilities:
+      - id: presenceSensor
+        version: 1
+    categories:
+      - name: PresenceSensor
+  - id: jinee
+    label: Jinee
+    capabilities:
+      - id: presenceSensor
+        version: 1
+    categories:
+      - name: PresenceSensor
+  - id: yoojoo
+    label: YooJoo
+    capabilities:
+      - id: presenceSensor
+        version: 1
+    categories:
+      - name: PresenceSensor
+  - id: hyukjoo
+    label: HyukJoo
+    capabilities:
+      - id: presenceSensor
+        version: 1
+    categories:
+      - name: PresenceSensor
+preferences:
+  - title: "OpenWRT IP"
+    name: openwrtIp
+    description: "공유기 LAN IP (예: 192.168.1.1)"
+    required: true
+    preferenceType: string
+    definition:
+      stringType: text
+      default: "192.168.1.1"
+  - title: "폴링 주기 (초)"
+    name: pollInterval
+    description: "재실 상태 확인 간격 — 이벤트 실패 시 보완용 (기본 60초)"
+    required: true
+    preferenceType: number
+    definition:
+      minimum: 30
+      maximum: 300
+      default: 60
+deviceConfig:
+  dashboard:
+    states:
+      - component: main
+        capability: presenceSensor
+        version: 1
+    actions: []
+  detailView:
+    - component: diego
+      capability: presenceSensor
+      version: 1
+    - component: jinee
+      capability: presenceSensor
+      version: 1
+    - component: yoojoo
+      capability: presenceSensor
+      version: 1
+    - component: hyukjoo
+      capability: presenceSensor
+      version: 1
+  automation:
+    conditions:
+      - component: main
+        capability: presenceSensor
+        version: 1
+      - component: diego
+        capability: presenceSensor
+        version: 1
+      - component: jinee
+        capability: presenceSensor
+        version: 1
+      - component: yoojoo
+        capability: presenceSensor
+        version: 1
+      - component: hyukjoo
+        capability: presenceSensor
+        version: 1
+    actions: []
