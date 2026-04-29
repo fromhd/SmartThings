@@ -16,14 +16,10 @@
 - 기상청 초단기실황 데이터를 활용한 정밀 기상 감지기
 - 실제 강수량 기반의 창문 제어 및 온습도 자동화 지원
 
-### 4. [🏠 Wi-Fi Presence Sensor](./ST_Wifi_Presence_Sensor/)
-- OpenWRT 공유기 연동 Wi-Fi 기반 가족 재실 감지기
-- ubus 시스템을 활용한 저지연/저부하 감지 방식
-
 ---
 
 ## 🛠️ 공통 요구사항
-- **SmartThings Hub:** v2, v3 또는 Aeotec Hub
+- **SmartThings Hub (or Station)
 - **[Edge Bridge](https://github.com/toddaustin07/edgebridge):** 일부 드라이버(Stock, Weather)는 외부 통신을 위해 로컬 네트워크 내의 Edge Bridge 서버가 필요합니다.
 
 ## 📄 라이선스
