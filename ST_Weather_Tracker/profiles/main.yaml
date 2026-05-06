@@ -5,7 +5,7 @@ components:
   - id: main
     label: Weather Tracker
     capabilities:
-      - id: waterSensor
+      - id: reasonmusic47804.precipitation
         version: 1
       - id: reasonmusic47804.weatherCondition
         version: 1
@@ -102,7 +102,7 @@ deviceConfig:
   automation:
     conditions:
       - component: main
-        capability: waterSensor
+        capability: reasonmusic47804.precipitation
         version: 1
       - component: main
         capability: temperatureMeasurement

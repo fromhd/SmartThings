@@ -1,0 +1,19 @@
+{
+  "name": "강수감지",
+  "attributes": {
+    "precipitation": {
+      "schema": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "enum": ["dry", "wet"]
+          }
+        },
+        "additionalProperties": false,
+        "required": ["value"]
+      }
+    }
+  },
+  "commands": {}
+}

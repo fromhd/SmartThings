@@ -1,7 +1,11 @@
 -- init.lua  (Weather Tracker)
 --
--- 기상청 초단기실황(getUltraSrtNcst) API를 EdgeBridge를 통해 조회하여
--- 현재 날씨 상태(SKY+PTY)를 표시하고, 강수 여부를 waterSensor로 반영합니다.
+-- 기상청 초단기실황(getUltraSrtNcst) + 초단기예보(getUltraSrtFcst) API를
+-- EdgeBridge를 통해 조회하여 현재 날씨 상태(SKY+PTY)를 표시하고,
+-- 강수 여부를 커스텀 precipitation capability로 반영합니다.
+--
+-- 초단기실황: PTY, RN1, T1H, REH (관측값)
+-- 초단기예보: SKY (예보값, 실황에 SKY 없음)
 --
 -- SKY 코드 (PTY=0일 때 사용):
 --   1 = 맑음, 3 = 구름많음, 4 = 흐림
@@ -23,7 +27,8 @@ local discovery    = require "discovery"
 
 local DEFAULT_PORT      = 8088
 local DEFAULT_INTERVAL  = 5   -- 분
-local BASE_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+local BASE_URL     = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"
+local FORECAST_URL = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"
 
 -- 커스텀 capability (대시보드 표시용 한국어 텍스트)
 local weatherCond = capabilities["reasonmusic47804.weatherCondition"]
@@ -57,6 +62,25 @@ local function get_base_datetime()
 end
 
 -- ──────────────────────────────────────────────────────────────────────────
+-- 초단기예보 base_date / base_time 계산
+-- 매시 30분 발표, ~45분 후 API 제공 가능
+-- minute < 45이면 직전 시각의 XX30 사용
+-- ──────────────────────────────────────────────────────────────────────────
+local function get_forecast_base_datetime()
+  local now_ts = os.time() + (9 * 3600)
+  local kst    = os.date("!*t", now_ts)
+  
+  -- 45분 이전이면 직전 시각 발표분 사용
+  if kst.min < 45 then
+    kst = os.date("!*t", now_ts - 3600)
+  end
+  
+  local base_date = string.format("%04d%02d%02d", kst.year, kst.month, kst.day)
+  local base_time = string.format("%02d30", kst.hour)
+  return base_date, base_time
+end
+
+-- ──────────────────────────────────────────────────────────────────────────
 -- SKY + PTY 코드 → 종합 날씨 텍스트
 -- ──────────────────────────────────────────────────────────────────────────
 -- SKY: 맑음/구름많음/흐림 (PTY=0일 때만 사용)
@@ -72,24 +96,27 @@ local PTY_LABEL = {
   [2] = "🌨️ 비/눈",
   [3] = "❄️ 눈",
   [4] = "⛈️ 소나기",
+  [5] = "🌦️ 빗방울",
+  [6] = "🌨️ 빗방울눈날림",
+  [7] = "🌨️ 눈날림",
 }
 
 -- 종합 날씨 텍스트 생성
 local function get_weather_label(sky, pty, rn1)
-  if pty ~= 0 then
-    -- 강수 형태가 있으면 PTY 기준으로 표시
+  if pty >= 1 and pty <= 7 then
+    -- PTY 1~7이면 강수 형태 표시 (강수량 무관)
     local base = PTY_LABEL[pty] or ("PTY:" .. tostring(pty))
     return string.format("%s (%.1fmm)", base, rn1 or 0)
   else
-    -- 강수 없으면 SKY 기준으로 표시 (강수량 0)
+    -- 강수 없으면 SKY 기준으로 표시
     local base = SKY_LABEL[sky] or "☀️ 맑음"
     return string.format("%s (0.0mm)", base)
   end
 end
 
 local function is_precipitation(pty, rn1)
-  -- PTY가 0이 아니고, 강수량(RN1)도 0.1mm 초과여야 실제 강수로 판단
-  return pty ~= 0 and (rn1 or 0) > 0.1
+  -- 강수량(RN1) 0 초과 시 강수로 판단 (자동화용)
+  return (rn1 or 0) > 0
 end
 
 -- ──────────────────────────────────────────────────────────────────────────
@@ -100,6 +127,20 @@ local function build_weather_url(api_key, nx, ny)
   return BASE_URL
     .. "?serviceKey=" .. api_key
     .. "&numOfRows=10"
+    .. "&pageNo=1"
+    .. "&dataType=JSON"
+    .. "&base_date=" .. base_date
+    .. "&base_time=" .. base_time
+    .. "&nx="        .. tostring(nx)
+    .. "&ny="        .. tostring(ny)
+end
+
+-- 초단기예보 URL (SKY 조회용)
+local function build_forecast_url(api_key, nx, ny)
+  local base_date, base_time = get_forecast_base_datetime()
+  return FORECAST_URL
+    .. "?serviceKey=" .. api_key
+    .. "&numOfRows=60"
     .. "&pageNo=1"
     .. "&dataType=JSON"
     .. "&base_date=" .. base_date
@@ -163,10 +204,9 @@ local function fetch_weather_and_emit(device)
       return
     end
 
-    -- ── PTY, RN1, SKY 추출 ────────────────────────────────────────────
+    -- ── PTY, RN1 추출 (초단기실황) ─────────────────────────────────────
     local pty = 0
     local rn1 = 0
-    local sky = 1  -- 기본값: 맑음
     local t1h = nil  -- 기온 (°C)
     local reh = nil  -- 습도 (%)
     for _, item in ipairs(items) do
@@ -174,13 +214,40 @@ local function fetch_weather_and_emit(device)
         pty = tonumber(item.obsrValue) or 0
       elseif item.category == "RN1" then
         rn1 = tonumber(item.obsrValue) or 0
-      elseif item.category == "SKY" then
-        sky = tonumber(item.obsrValue) or 1
       elseif item.category == "T1H" then
         t1h = tonumber(item.obsrValue)
       elseif item.category == "REH" then
         reh = tonumber(item.obsrValue)
       end
+    end
+
+    -- ── SKY 추출 (초단기예보 별도 호출) ────────────────────────────────
+    -- 초단기실황(getUltraSrtNcst)에는 SKY 항목이 없으므로
+    -- 초단기예보(getUltraSrtFcst)에서 가장 가까운 예보 시점의 SKY를 가져옴
+    local sky = 1  -- 기본값: 맑음 (예보 조회 실패 시 fallback)
+    local forecast_url = build_forecast_url(api_key, nx, ny)
+    if debug then log.info("[weather-tracker] forecast url: " .. forecast_url) end
+    local fparsed, ferr = bridge_api.forward(ip, port, forecast_url, nil)
+    if fparsed then
+      local fok, fitems = pcall(function()
+        return fparsed.response.body.items.item
+      end)
+      if fok and type(fitems) == "table" then
+        for _, fitem in ipairs(fitems) do
+          if fitem.category == "SKY" then
+            sky = tonumber(fitem.fcstValue) or 1
+            if debug then
+              log.info(string.format("[weather-tracker] SKY=%d from forecast %s %s",
+                sky, tostring(fitem.fcstDate), tostring(fitem.fcstTime)))
+            end
+            break  -- 가장 가까운 예보 시점 사용
+          end
+        end
+      else
+        log.warn("[weather-tracker] forecast response parse failed, using default SKY=1")
+      end
+    else
+      log.warn("[weather-tracker] forecast fetch failed: " .. tostring(ferr) .. ", using default SKY=1")
     end
 
     local raining = is_precipitation(pty, rn1)
@@ -190,12 +257,15 @@ local function fetch_weather_and_emit(device)
       sky, pty, rn1, tostring(t1h), tostring(reh), label, tostring(raining)))
 
     -- ── 이벤트 발행 ────────────────────────────────────────────────────
-    -- waterSensor: 자동화 룰 조건용 (PTY>0 AND RN1>0.1mm 일 때만 wet)
-    local ws = capabilities.waterSensor
-    if raining then
-      pcall(device.emit_event, device, ws.water.wet())
-    else
-      pcall(device.emit_event, device, ws.water.dry())
+    -- precipitation: 자동화 룰 조건용 (PTY>0 AND RN1>0.1mm 일 때만 wet)
+    -- 커스텀 capability 사용으로 SmartThings 내장 수분감지 알림 방지
+    local precip = capabilities["reasonmusic47804.precipitation"]
+    if precip and precip.precipitation then
+      if raining then
+        pcall(device.emit_event, device, precip.precipitation({ value = "wet" }))
+      else
+        pcall(device.emit_event, device, precip.precipitation({ value = "dry" }))
+      end
     end
 
     -- weatherCondition: 대시보드 종합 날씨 상태 표시용

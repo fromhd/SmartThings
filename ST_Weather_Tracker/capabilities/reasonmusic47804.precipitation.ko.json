@@ -1,0 +1,20 @@
+{
+  "tag": "ko",
+  "label": "강수감지",
+  "attributes": {
+    "precipitation": {
+      "label": "강수감지",
+      "i18n": {
+        "value": {
+          "dry": {
+            "label": "건조"
+          },
+          "wet": {
+            "label": "강수"
+          }
+        }
+      }
+    }
+  },
+  "commands": {}
+}

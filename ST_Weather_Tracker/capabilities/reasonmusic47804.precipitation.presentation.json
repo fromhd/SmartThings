@@ -1,0 +1,32 @@
+{
+  "dashboard": {
+    "states": [],
+    "actions": []
+  },
+  "detailView": [],
+  "automation": {
+    "conditions": [
+      {
+        "label": "강수감지",
+        "displayType": "list",
+        "list": {
+          "attribute": "precipitation",
+          "value": "precipitation.value",
+          "alternatives": [
+            {
+              "key": "dry",
+              "value": "건조",
+              "type": "inactive"
+            },
+            {
+              "key": "wet",
+              "value": "강수",
+              "type": "active"
+            }
+          ]
+        }
+      }
+    ],
+    "actions": []
+  }
+}
